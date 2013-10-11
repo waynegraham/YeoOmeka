@@ -45,13 +45,13 @@ class {
 	'mysql::php':
 		require => Exec['apt-get update'];
 	'mysql::server':
-		config_hash => { 'root_password' => 'yeomeka' },
+		config_hash => { 'root_password' => 'yeoomeka' },
 		require => Exec['apt-get update'];
 }
 mysql::db {
-	'yeomeka':
-		user     => 'yeomeka',
-		password => 'yeomeka',
+	'yeoomeka':
+		user     => 'yeoomeka',
+		password => 'yeoomeka',
 		host     => 'localhost',
 		grant    => ['all'],
 }
@@ -68,7 +68,7 @@ exec {
 		timeout => 0;
 }
 exec {
-	'link-yeomeka':
+	'link-yeoomeka':
 		cwd => '/home/vagrant/generator-omeka',
 		command => 'sudo npm link',
 		require => Exec['yo'];

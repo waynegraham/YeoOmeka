@@ -8,6 +8,6 @@ omeka.getDbCredentials().on('done', function(creds) {
 	console.log(creds);
 });
 
-omeka.activateTheme('yeomeka', function() {
+omeka.activateTheme('yeoomeka', function() {
 	console.log(arguments);
 });
