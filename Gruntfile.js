@@ -17,9 +17,11 @@ module.exports = function(grunt) {
 		test: {
 			unit: {
 				src: [
+          'test/art.js',
 					'test/spawn.js',
 					'test/git.js',
-					'test/prompt.js'
+					'test/prompt.js',
+          'test/omeka.js'
 				]
 			}
 		}
