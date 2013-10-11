@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   end
 
   # Synced Folder
-  config.vm.synced_folder "test/site", "home/vagrant/www"
-  config.vm.synced_folder ".", "home/vagrant/generator-omeka"
+  config.vm.synced_folder "test/site", "/home/vagrant/www"
+  config.vm.synced_folder ".", "/home/vagrant/generator-omeka"
 
 end
