@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 				}
 			},
 			js : {
-				files : ['js/**/*.js'],
+				files : ['javascripts/**/*.js'],
 				tasks : ['jshint'],
 				options : {
 					livereload : true
@@ -26,9 +26,9 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// JsHint your javascript
+		// JsHint your javascripts
 		jshint : {
-			all : ['js/*.js', '!js/modernizr.js', '!js/*.min.js', '!js/vendor/**/*.js'],
+			all : ['javascripts/*.js', '!javascripts/modernizr.js', '!javascripts/*.min.js', '!javascripts/vendor/**/*.js'],
 			options : {
 				browser: true,
 				curly: false,
@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 		// Bower task sets up require config
 		bower : {
 			all : {
-				rjsConfig : 'js/global.js'
+				rjsConfig : 'javascripts/global.js'
 			}
 		},
 
@@ -89,8 +89,8 @@ module.exports = function(grunt) {
 				options : {
 					name : 'global',
 					baseUrl : 'js',
-					mainConfigFile : 'js/global.js',
-					out : 'js/optimized.min.js'
+					mainConfigFile : 'javascripts/global.js',
+					out : 'javascripts/optimized.min.js'
 				}
 			}
 		},
