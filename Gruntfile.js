@@ -1,58 +1,160 @@
 module.exports = function(grunt) {
 
-	// Configuration
 	grunt.initConfig({
-		clean: {
-			site: ['test/site/*', 'test/site/.*', '!test/site/.gitkeep'],
-			test: ['test/tmp'],
-			cache: {
-				options: {force: true},
-				src: [
-					// Omeka
-					process.env.HOME + '/.yeoman/cache/omeka',
-					// Yeopress default theme
-					process.env.HOME + 'waynegraham/YeoOmeka']
+
+		// Watches for changes and runs tasks
+		watch : {
+			sass : {
+				files : ['scss/**/*.scss'],
+				tasks : ['sass:dev'],
+				options : {
+					livereload : true
+				}
+			},
+			js : {
+				files : ['js/**/*.js'],
+				tasks : ['jshint'],
+				options : {
+					livereload : true
+				}
+			},
+			php : {
+				files : ['**/*.php'],
+				options : {
+					livereload : true
+				}
 			}
 		},
-		test: {
-			unit: {
-				src: [
-          'test/art.js',
-					'test/spawn.js',
-					'test/git.js',
-					'test/prompt.js',
-          'test/omeka.js'
+
+		// JsHint your javascript
+		jshint : {
+			all : ['js/*.js', '!js/modernizr.js', '!js/*.min.js', '!js/vendor/**/*.js'],
+			options : {
+				browser: true,
+				curly: false,
+				eqeqeq: false,
+				eqnull: true,
+				expr: true,
+				immed: true,
+				newcap: true,
+				noarg: true,
+				smarttabs: true,
+				sub: true,
+				undef: false
+			}
+		},
+
+		// Dev and production build for sass
+		sass : {
+			production : {
+				files : [
+					{
+						src : ['**/*.scss', '!**/_*.scss'],
+						cwd : 'scss',
+						dest : 'css',
+						ext : '.css',
+						expand : true
+					}
+				],
+				options : {
+					style : 'compressed'
+				}
+			},
+			dev : {
+				files : [
+					{
+						src : ['**/*.scss', '!**/_*.scss'],
+						cwd : 'scss',
+						dest : 'css',
+						ext : '.css',
+						expand : true
+					}
+				],
+				options : {
+					style : 'expanded'
+				}
+			}
+		},
+
+		// Bower task sets up require config
+		bower : {
+			all : {
+				rjsConfig : 'js/global.js'
+			}
+		},
+
+		// Require config
+		requirejs : {
+			production : {
+				options : {
+					name : 'global',
+					baseUrl : 'js',
+					mainConfigFile : 'js/global.js',
+					out : 'js/optimized.min.js'
+				}
+			}
+		},
+
+		// Image min
+		imagemin : {
+			production : {
+				files : [
+					{
+						expand: true,
+						cwd: 'images',
+						src: '**/*.{png,jpg,jpeg}',
+						dest: 'images'
+					}
+				]
+			}
+		},
+
+		// SVG min
+		svgmin: {
+			production : {
+				files: [
+					{
+						expand: true,
+						cwd: 'images',
+						src: '**/*.svg',
+						dest: 'images'
+					}
 				]
 			}
 		}
+
 	});
 
-	// Load external tasks
-	grunt.loadNpmTasks('grunt-contrib-clean');
+	// Default task
+	grunt.registerTask('default', ['watch']);
 
-	// Test runner task
-	grunt.registerMultiTask('test', function() {
-		var done = this.async(),
-			async = require('async'),
-			testFncs = [];
+	// Build task
+	grunt.registerTask('build', ['jshint', 'sass:production', 'imagemin:production', 'svgmin:production', 'requirejs:production']);
 
-		for (var f in this.filesSrc) {
-			(function(f, filesSrc) {
-				testFncs.push(function(done) {
-					var p = grunt.util.spawn({
-						cmd: 'node',
-						args: [filesSrc[f], '--color'],
-					}, function() {
-						done();
-					})
-					p.stdout.pipe(process.stdout);
-					p.stderr.pipe(process.stderr);
-				});
-			})(f, this.filesSrc);
-		}
+	// Template Setup Task
+	grunt.registerTask('setup', ['sass:dev', 'bower-install'])
 
-		async.series(testFncs, function() {
+	// Load up tasks
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-bower-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-imagemin');
+	grunt.loadNpmTasks('grunt-svgmin');
+
+	// Run bower install
+	grunt.registerTask('bower-install', function() {
+		var done = this.async();
+		var bower = require('bower').commands;
+		bower.install().on('end', function(data) {
+			done();
+		}).on('data', function(data) {
+			console.log(data);
+		}).on('error', function(err) {
+			console.error(err);
 			done();
 		});
 	});
-}
+
+};
