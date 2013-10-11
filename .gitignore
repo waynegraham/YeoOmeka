@@ -1,4 +1,4 @@
+.sass-cache
 node_modules
-.vagrant
-test/site/*
-test/tmp
+.DS_Store
+.vagrant/
