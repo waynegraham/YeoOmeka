@@ -1,0 +1,4 @@
+node_modules
+.vagrant
+test/site/*
+test/tmp
