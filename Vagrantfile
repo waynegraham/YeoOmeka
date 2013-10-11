@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
 
   # Set Timezone
   config.vm.provision :shell,
-    :inline => "echo America/New York | sudo tee /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata"
+    :inline => "echo America/Chicago | sudo tee /etc/timezone && sudo dpkg-reconfigure --frontend noninteractive tzdata"
 
   # Provision Box
   config.vm.provision :puppet do |puppet|
